@@ -130,6 +130,7 @@ dmypy.json
 
 # Custom files
 rbac/user*
-rbac/ca.srl
+*/ca.srl
+*/user*
 .idea
 
