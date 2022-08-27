@@ -10,7 +10,7 @@ TOKEN_HASH="sha256:1976e913c32bef595cc52020a16fd9887c8e0009d480169690d6964eaa8a9
 # 1. Initialize Kubernetes cluster on master node
 kubeadm init --pod-network-cidr "$POD_NETWORK" --apiserver-advertise-address "$API_SERVER_IP"
 
-# 2. Copy configuration file on master node
+# 2. Copy configuration file.json on master node
 mkdir ~/.kube
 cp /etc/kubernetes/admin.conf ~/.kube/config
 
