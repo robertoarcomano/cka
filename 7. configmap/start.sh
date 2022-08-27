@@ -35,7 +35,7 @@ kubectl run $POD --image nginx --dry-run=client -o yaml > $POD_FILE
 # 2.2. Add to the pod
 cat $POD_FILE | yq '
 .spec.volumes[0]={"name": "vol-cm1", "configMap": { "name": "cm1"}},
-.spec.containers[0].env=[
+.spec.containers[0].env = [
   {
     "name": "user",
     "valueFrom": {
@@ -45,6 +45,13 @@ cat $POD_FILE | yq '
       }
     }
   }
+],
+.spec.containers[0].envFrom = [
+  {
+    "configMapRef": {
+      "name": "cm2"
+    }
+  }
 ]
 '|kubectl apply -f -
 
@@ -52,4 +59,4 @@ cat $POD_FILE | yq '
 echo "Waiting for the pod to become Running..."
 until kubectl get pods nginx|grep Running; do sleep 1; done
 # 2.4. Check for cm1
-kubectl exec -it nginx -- env|grep user
+kubectl exec -it nginx -- env | grep -e user -e number -e country
