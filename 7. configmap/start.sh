@@ -6,7 +6,6 @@ CONFIGMAP2=cm2
 CONFIGMAP3=cm3
 ENV_FILE=env-file
 FILE=file.json
-POD_FILE=nginx.yaml
 POD=nginx
 
 # 1. Create configmaps
@@ -29,11 +28,8 @@ kubectl get cm cm1 cm2 cm3 -o yaml
 # 2.0. Delete the pod
 kubectl delete pod $POD
 
-# 2.1. Create a pod (dry run) and save it to $POD_FILE
-kubectl run $POD --image nginx --dry-run=client -o yaml > $POD_FILE
-
-# 2.2. Add to the pod
-cat $POD_FILE | yq '
+# 2.1. Add to the pod
+kubectl run $POD --image nginx --dry-run=client -o yaml | yq '
 .spec.volumes = [
   {"name": "vol-cm1", "configMap": { "name": "cm1"}},
   {"name": "vol-cm2", "configMap": { "name": "cm2"}},
@@ -69,13 +65,13 @@ cat $POD_FILE | yq '
 ]
 '|kubectl apply -f -
 
-# 2.3. Sleep until pod is ready
+# 2.2. Sleep until pod is ready
 echo "Waiting for the pod to become Running..."
 until kubectl get pods nginx|grep Running; do sleep 1; done
 
-# 2.4. Check for all cm from env
+# 2.3. Check for all cm from env
 kubectl exec -it nginx -- env | grep -e user -e number -e country -e age
 
-# 2.5. Check for all cm from mounted volumes
+# 2.4. Check for all cm from mounted volumes
 kubectl exec -it nginx -- bash -c "find /tmp/cm*"
 
