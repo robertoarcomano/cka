@@ -10,8 +10,8 @@ SERVICE_TYPE=NodePort
 SERVICE_NAME=svc-$POD
 NUM_REPLICAS=10
 
-# 1. Create configmaps
-# 1.0. Delete previous configmap
+# 1. Create services
+# 1.0. Delete previous services
 kubectl delete svc $POD
 kubectl delete pod $POD
 
