@@ -4,13 +4,19 @@
 SECRET1=secret1
 SECRET2=secret2
 SECRET3=secret3
+TLS_SECRET1=tls1
+TLS_CERT=tls.crt
+TLS_CSR=tls.csr
+TLS_KEY=tls.key
+SUBJ="/CN=tls"
+DAYS=1000
 ENV_FILE=env-file
 FILE=file.json
 POD=nginx
 
 # 1. Create configmaps
 # 1.0. Delete previous configmap
-kubectl delete secret $SECRET1 $SECRET2 $SECRET3
+kubectl delete secret $SECRET1 $SECRET2 $SECRET3 $TLS_SECRET1
 
 # 1.1. Create $SECRET1
 kubectl create secret generic $SECRET1 --from-literal "user=roberto" --from-literal "city=Turin"
@@ -21,8 +27,16 @@ kubectl create secret generic $SECRET2 --from-env-file $ENV_FILE
 # 1.3. Create $SECRET3
 kubectl create secret generic $SECRET3 --from-file $FILE
 
-# 1.4. Check
-kubectl get secret secret1 secret2 secret3 -o yaml
+# 1.4.1. Create $TLS_CERT and $TLS_KEY
+openssl genrsa -out $TLS_KEY 2048
+openssl req -new -key $TLS_KEY -out $TLS_CSR -subj $SUBJ
+openssl x509 -req -in $TLS_CSR -signkey $TLS_KEY -out $TLS_CERT -days $DAYS
+
+# 1.4.2. Create $TLS_SECRET1
+kubectl create secret tls $TLS_SECRET1 --cert $TLS_CERT --key $TLS_KEY
+
+# 1.5. Check
+kubectl get secret $SECRET1 $SECRET2 $SECRET3 $TLS_SECRET1 -o yaml
 
 # 2. Use configmaps
 # 2.0. Delete the pod
