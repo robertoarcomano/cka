@@ -1,6 +1,6 @@
 #!/bin/bash
-#
-## 0. Constants
+
+# 0. Constants
 NODE1=w1.robertoarcomano.com
 REPLICAS=10
 DEPLOY_NAME1=nginx
