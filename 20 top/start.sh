@@ -9,4 +9,4 @@
 
 # 1. Show node as well as pod top
 kubectl top nodes
-kubectl top pods
+kubectl top pods --containers
