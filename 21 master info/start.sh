@@ -14,5 +14,5 @@ echo
 kubectl get pods -A|grep "$MASTER"
 echo
 
-# 3. Check dns service
+# 4. Check dns service
 kubectl get all -A|grep -i dns
