@@ -8,6 +8,7 @@ WORKING_DELAY=5
 let LONGER_WORKING_DELAY=$WORKING_DELAY*2
 STARTED_FILE=/tmp/started
 ALIVE_FILE=/tmp/alive
+
 # 1. Remove old pod e create new one
 kubectl delete pod $POD --grace-period 0 --force
 kubectl run $POD --image $IMAGE --dry-run=client -o yaml | yq "
