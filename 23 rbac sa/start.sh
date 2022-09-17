@@ -13,7 +13,7 @@ kubectl delete role $ROLE --grace-period 0 --force
 kubectl delete ns $NS --grace-period 0 --force
 echo
 
-# 1. Create NS as well as SA
+# 1. Create ns as well as sa
 kubectl create ns $NS
 kubectl create sa $SA -n $NS
 
