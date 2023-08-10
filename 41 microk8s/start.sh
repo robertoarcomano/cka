@@ -16,5 +16,8 @@ microk8s status
 echo "Command to connect to microk8s:"
 echo "microk8s kubectl"
 
-# 4. Pod Test
+# 4. Pod Creation
 $KUBECTL create -f $POD_FILE
+
+# 5. Pod test
+$KUBECTL get pods ubuntu
