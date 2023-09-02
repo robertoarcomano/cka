@@ -12,5 +12,7 @@ if [ "$DNS" -eq 1 ]; then
   echo "DNS is installed and running"
 else
   echo "DNS is missing"
+  echo "Attempt to restart DNS..."
+  microk8s enable dns
 fi
 
