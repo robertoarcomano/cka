@@ -16,3 +16,12 @@ else
   microk8s enable dns
 fi
 
+# 3. Check Prometheus
+PROMETHEUS=$(microk8s status -a prometheus|grep enabled|wc -l)
+if [ "$PROMETHEUS" -eq 1 ]; then
+  echo "PROMETHEUS is installed and running"
+else
+  echo "PROMETHEUS is missing"
+  echo "Attempt to restart PROMETHEUS..."
+  microk8s enable prometheus
+fi
